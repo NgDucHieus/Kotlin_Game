@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -70,122 +71,12 @@ fun loginReview()
 fun LoginSignupApp() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginUIScreen(navController) }
         composable("signup") { SignUpScreen(navController) }
+        composable("main") { MainScreen() } // Add main screen destination
     }
 }
 
-
-@Composable
-fun LoginScreen(navController: NavHostController) {
-    val focusManager = LocalFocusManager.current
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { focusManager.clearFocus() }) // Dismiss keyboard on tap
-            },
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Facebook Button
-        StyledButton(
-            text = "Continue with Facebook",
-            backgroundColor = Color(0xFF386FFF),
-            textColor = Color.White,
-            onClick = { /* Handle Facebook Login */ }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Continue as User Button
-        OutlinedButton(
-            onClick = { /* Handle user login */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(40.dp),
-            border = BorderStroke(1.dp, Color.Black)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Continue as Hiếu", fontSize = 14.sp)
-                Text("hieu57075@gmail.com", fontSize = 12.sp, color = Color.Gray)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Divider with "OR"
-        DividerWithText("OR")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Email TextField
-        RoundedInputField(
-            value = email,
-            onValueChange = { email = it },
-            placeholder = "Email",
-            imeAction = ImeAction.Next
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Password TextField
-        RoundedInputField(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = "Password",
-            visualTransformation = PasswordVisualTransformation(),
-            imeAction = ImeAction.Done,
-            onImeAction = { focusManager.clearFocus() }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Forgot Password Text
-        Text(
-            text = "Forgot your password?",
-            modifier = Modifier.align(Alignment.End),
-            fontSize = 12.sp,
-            color = Color.Gray
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Login Button
-        StyledButton(
-            text = "Log In",
-            backgroundColor = if (email.isNotEmpty() && password.isNotEmpty()) Color(0xFF386FFF) else Color.LightGray,
-            textColor = if (email.isNotEmpty() && password.isNotEmpty()) Color.White else Color.Gray,
-            enabled = email.isNotEmpty() && password.isNotEmpty(),
-            onClick = { /* Handle login */ }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Sign Up Option
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "No Account?", fontSize = 14.sp)
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "Sign up",
-                fontSize = 14.sp,
-                color = Color.Blue,
-                modifier = Modifier.clickable {
-                    navController.navigate("signup")
-                },
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
 
 @Composable
 fun SignUpScreen(navController: NavHostController) {
@@ -298,325 +189,203 @@ fun RoundedInputField(
     )
 }
 
+
 @Composable
-fun DividerWithText(text: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+fun MainScreen() {
+    // Example main screen content
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
-        Text(text, modifier = Modifier.padding(horizontal = 8.dp), fontSize = 14.sp)
-        Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
+        Text(
+            text = "Welcome to the Main Screen!",
+            style = MaterialTheme.typography.headlineMedium
+        )
     }
 }
 
 
-//@Composable
-//fun LoginScreen(navController: NavHostController) {
-//    var email by remember { mutableStateOf(TextFieldValue("")) }
-//    var password by remember { mutableStateOf(TextFieldValue("")) }
-//
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        BasicTextField(
-//            value = email,
-//            onValueChange = { email = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 32.dp),
-//            decorationBox = { innerTextField ->
-//                Box(Modifier.padding(4.dp)) { innerTextField() }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        BasicTextField(
-//            value = password,
-//            onValueChange = { password = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 32.dp),
-//            visualTransformation = PasswordVisualTransformation(),
-//            decorationBox = { innerTextField ->
-//                Box(Modifier.padding(4.dp)) { innerTextField() }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Button(onClick = { /* Handle login logic */ }) {
-//            Text("Login")
-//        }
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        Text(
-//            text = "Don't have an account? Sign Up",
-//            modifier = Modifier.clickable {
-//                navController.navigate("signup")
-//            },
-//            color = MaterialTheme.colorScheme.primary
-//        )
-//    }
-//}
-//
-//
-//@Composable
-//fun SignUpScreen(navController: NavHostController) {
-//    var email by remember { mutableStateOf(TextFieldValue("")) }
-//    var password by remember { mutableStateOf(TextFieldValue("")) }
-//    var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
-//
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        Text(text = "Sign Up", style = MaterialTheme.typography.headlineMedium)
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        BasicTextField(
-//            value = email,
-//            onValueChange = { email = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 32.dp),
-//            decorationBox = { innerTextField ->
-//                Box(Modifier.padding(4.dp)) { innerTextField() }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        BasicTextField(
-//            value = password,
-//            onValueChange = { password = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 32.dp),
-//            visualTransformation = PasswordVisualTransformation(),
-//            decorationBox = { innerTextField ->
-//                Box(Modifier.padding(4.dp)) { innerTextField() }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        BasicTextField(
-//            value = confirmPassword,
-//            onValueChange = { confirmPassword = it },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 32.dp),
-//            visualTransformation = PasswordVisualTransformation(),
-//            decorationBox = { innerTextField ->
-//                Box(Modifier.padding(4.dp)) { innerTextField() }
-//            }
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Button(onClick = { /* Handle sign-up logic */ }) {
-//            Text("Sign Up")
-//        }
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        Text(
-//            text = "Already have an account? Login",
-//            modifier = Modifier.clickable {
-//                navController.navigate("login")
-//            },
-//            color = MaterialTheme.colorScheme.primary
-//        )
-//    }
-//}
+@Preview
+@Composable
+fun ReviewLoginScreen()
+{
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") { LoginUIScreen(navController) }
+        composable("signup") { SignUpScreen(navController) }
+        composable("main") { MainScreen() } // Add main screen destination
+    }
+}
 
 
+@Composable
+fun LoginUIScreen(navController: NavHostController) {
+    val focusManager = LocalFocusManager.current
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() }) // Dismiss keyboard on tap
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Continue with Facebook Button
+        Button(
+            onClick = { /* Handle Facebook Login */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF386FFF)), // Facebook Blue
+            shape = RoundedCornerShape(40.dp)
+        ) {
+            Text("Continue with Facebook", color = Color.White, fontSize = 16.sp)
+        }
 
+        Spacer(modifier = Modifier.height(16.dp))
 
+        // Continue as a specific user (outlined)
+        OutlinedButton(
+            onClick = { /* Handle Login */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(40.dp),
+            border = BorderStroke(1.dp, Color.Black)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Continue as Hiếu", fontSize = 14.sp)
+                Text("hieu57075@gmail.com", fontSize = 12.sp, color = Color.Gray)
+            }
+        }
 
-//@Preview
-//@Composable
-//fun ReviewLoginScreen()
-//{
-//    LoginUIScreen()
-//}
-//
-//
-//@Composable
-//fun LoginUIScreen() {
-//    val focusManager = LocalFocusManager.current
-//    var email by remember { mutableStateOf("") }
-//    var password by remember { mutableStateOf("") }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//            .pointerInput(Unit) {
-//                detectTapGestures(onTap = { focusManager.clearFocus() }) // Dismiss keyboard on tap
-//            },
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        // Continue with Facebook Button
-//        Button(
-//            onClick = { /* Handle Facebook Login */ },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(50.dp),
-//            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF386FFF)), // Facebook Blue
-//            shape = RoundedCornerShape(40.dp)
-//        ) {
-//            Text("Continue with Facebook", color = Color.White, fontSize = 16.sp)
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Continue as a specific user (outlined)
-//        OutlinedButton(
-//            onClick = { /* Handle Login */ },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(50.dp),
-//            shape = RoundedCornerShape(40.dp),
-//            border = BorderStroke(1.dp, Color.Black)
-//        ) {
-//            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                Text("Continue as Hiếu", fontSize = 14.sp)
-//                Text("hieu57075@gmail.com", fontSize = 12.sp, color = Color.Gray)
-//            }
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Divider with "OR"
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(vertical = 8.dp),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
-//            Text("OR", modifier = Modifier.padding(horizontal = 8.dp), fontSize = 14.sp)
-//            Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
-//        }
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        // Email TextField
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(56.dp)
-//                .background(Color.White, shape = RoundedCornerShape(50)) // White background with rounded corners
-//                .border(1.dp, Color.Black, shape = RoundedCornerShape(50)) // Black border
-//                .padding(horizontal = 16.dp) // Inner padding for the text field
-//        ) {
-//            TextField(
-//                value = email,
-//                onValueChange = { email = it },
-//                placeholder = { Text("Email", color = Color.Gray) },
-//                modifier = Modifier.fillMaxSize(),
-//                colors = TextFieldDefaults.textFieldColors(
-//                    focusedIndicatorColor = Color.Transparent, // Remove underline when focused
-//                    unfocusedIndicatorColor = Color.Transparent, // Remove underline when unfocused
-//                    placeholderColor = Color.Gray,
-//                    backgroundColor = Color.Transparent // Transparent container
-//                ),
-//                singleLine = true,
-//                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-//            )
-//        }
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        // Password TextField
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(56.dp)
-//                .background(Color.White, shape = RoundedCornerShape(50)) // White background with rounded corners
-//                .border(1.dp, Color.Black, shape = RoundedCornerShape(50)) // Black border
-//                .padding(horizontal = 16.dp) // Inner padding for the text field
-//        ) {
-//            TextField(
-//                value = password,
-//                onValueChange = { password = it },
-//                placeholder = { Text("Password", color = Color.Gray) },
-//                modifier = Modifier.fillMaxSize(),
-//                colors = TextFieldDefaults.textFieldColors(
-//                    focusedIndicatorColor = Color.Transparent, // Remove underline when focused
-//                    unfocusedIndicatorColor = Color.Transparent, // Remove underline when unfocused
-//                    placeholderColor = Color.Gray,
-//                    backgroundColor = Color.Transparent // Transparent container
-//                ),
-//                visualTransformation = PasswordVisualTransformation(), // Hide input
-//                singleLine = true,
-//                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-//                keyboardActions = KeyboardActions(
-//                    onDone = { focusManager.clearFocus() } // Dismiss keyboard on Done action
-//                )
-//            )
-//        }
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        // Forgot Password Text
-//        Text(
-//            text = "Forgot your password?",
-//            modifier = Modifier
-//                .align(Alignment.End)
-//                .padding(end = 16.dp),
-//            fontSize = 12.sp,
-//            color = Color.Gray
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Login Button (Initially Disabled)
-//        Button(
-//            onClick = { /* Handle Login */ },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(50.dp),
-//            enabled = email.isNotEmpty() && password.isNotEmpty(), // Enable when inputs are filled
-//            colors = ButtonDefaults.buttonColors(backgroundColor = if (email.isNotEmpty() && password.isNotEmpty()) Color(0xFF386FFF) else Color.LightGray),
-//            shape = RoundedCornerShape(8.dp)
-//        ) {
-//            Text("Log In", color = if (email.isNotEmpty() && password.isNotEmpty()) Color.White else Color.Gray, fontSize = 16.sp)
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Sign Up Option
-//        Row(
-//            horizontalArrangement = Arrangement.Center,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(text = "No Account?", fontSize = 14.sp)
-//            Spacer(modifier = Modifier.width(4.dp))
-//            Text(
-//                text = "Sign up",
-//                fontSize = 14.sp,
-//                color = Color.Blue,
-//                modifier = Modifier.clickable { /* Navigate to Sign Up */ },
-//                textAlign = TextAlign.Center
-//            )
-//        }
-//    }
-//}
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Divider with "OR"
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
+            Text("OR", modifier = Modifier.padding(horizontal = 8.dp), fontSize = 14.sp)
+            Divider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Email TextField
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .background(Color.White, shape = RoundedCornerShape(50)) // White background with rounded corners
+                .border(1.dp, Color.Black, shape = RoundedCornerShape(50)) // Black border
+                .padding(horizontal = 16.dp) // Inner padding for the text field
+        ) {
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                placeholder = { Text("Email", color = Color.Gray) },
+                modifier = Modifier.fillMaxSize(),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent, // Remove underline when focused
+                    unfocusedIndicatorColor = Color.Transparent, // Remove underline when unfocused
+                    placeholderColor = Color.Gray,
+                    backgroundColor = Color.Transparent // Transparent container
+                ),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Password TextField
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .background(Color.White, shape = RoundedCornerShape(50)) // White background with rounded corners
+                .border(1.dp, Color.Black, shape = RoundedCornerShape(50)) // Black border
+                .padding(horizontal = 16.dp) // Inner padding for the text field
+        ) {
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                placeholder = { Text("Password", color = Color.Gray) },
+                modifier = Modifier.fillMaxSize(),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent, // Remove underline when focused
+                    unfocusedIndicatorColor = Color.Transparent, // Remove underline when unfocused
+                    placeholderColor = Color.Gray,
+                    backgroundColor = Color.Transparent // Transparent container
+                ),
+                visualTransformation = PasswordVisualTransformation(), // Hide input
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { focusManager.clearFocus() } // Dismiss keyboard on Done action
+                )
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Forgot Password Text
+        Text(
+            text = "Forgot your password?",
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(end = 16.dp),
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Login Button (Initially Disabled)
+        Button(
+            onClick = {
+                    navController.navigate("main")
+                      },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            enabled = email.isNotEmpty() && password.isNotEmpty(), // Enable when inputs are filled
+            colors = ButtonDefaults.buttonColors(backgroundColor = if (email.isNotEmpty() && password.isNotEmpty()) Color(0xFF386FFF) else Color.LightGray),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text("Log In", color = if (email.isNotEmpty() && password.isNotEmpty()) Color.White else Color.Gray, fontSize = 16.sp)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Sign Up Option
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "No Account?", fontSize = 14.sp)
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "Sign up",
+                fontSize = 14.sp,
+                color = Color.Blue,
+                modifier = Modifier.clickable {  navController.navigate("signup") },
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
 
 
 
