@@ -2,7 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="PreviewHeaderWithColorSeparation">
+        <State />
+      </entry>
       <entry key="ReviewLoginScreen">
+        <State />
+      </entry>
+      <entry key="VideoScreen">
         <State />
       </entry>
       <entry key="app">

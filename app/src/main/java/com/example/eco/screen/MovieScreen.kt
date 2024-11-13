@@ -1,56 +1,27 @@
 package com.example.eco.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.eco.R
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.math.round
-
-@Composable
-fun MoviesScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Movies Screen", fontSize = 24.sp)
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun VideoScreen()
-{
-    MoviesScreen()
-}
-
-
-
+import com.example.eco.R
 
 // Data Model for Courses
 data class Course(
@@ -64,21 +35,21 @@ data class Course(
 @Composable
 fun MyCoursesScreen() {
     Scaffold(
-        bottomBar = { BottomNavigationBar2() }
-    ) { paddingValues ->
+        topBar = {
+
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFF8F8FF))
-                .padding(paddingValues)
+                .padding(it) // Scaffold padding
         ) {
             HeaderSection()
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             CategoryTabs()
-            Spacer(modifier = Modifier.height(16.dp))
-//            PromotionBanner()
-            Spacer(modifier = Modifier.height(16.dp))
-            CourseList() // Dynamic list of courses
+            Spacer(modifier = Modifier.height(12.dp))
+            CourseList()
         }
     }
 }
@@ -94,46 +65,53 @@ fun HeaderSection() {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = { /* Handle back click */ }) {
-            Icon(painter = painterResource(id = R.drawable.vector),
+            Icon(
+                painter = painterResource(id = R.drawable.vector),
                 contentDescription = "Back",
                 modifier = Modifier.size(28.dp),
                 tint = Color.Unspecified
             )
         }
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        Box(modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
-
-        ) {
+        )
+        {
             Text(
-                text = "Video hướng dẫn", fontSize = 20.sp,
+
+                text = "Video hướng dẫn",
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF7875FF),
-
-                )
+            )
         }
-
     }
 }
 
 // Category Tabs
 @Composable
 fun CategoryTabs() {
+    val selectedTab = remember { mutableStateOf("All") }
+    val tabs = listOf("All", "Ongoing", "Completed")
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 5.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        CategoryTab("All", true)
-        CategoryTab("Ongoing", false)
-        CategoryTab("Completed", false)
+        tabs.forEach { tab ->
+            CategoryTab(
+                title = tab,
+                isSelected = selectedTab.value == tab
+            ) {
+                selectedTab.value = tab
+            }
+        }
     }
 }
 
 @Composable
-fun CategoryTab(title: String, isSelected: Boolean) {
+fun CategoryTab(title: String, isSelected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(
@@ -141,7 +119,7 @@ fun CategoryTab(title: String, isSelected: Boolean) {
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable { /* Handle tab click */ },
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -153,7 +131,7 @@ fun CategoryTab(title: String, isSelected: Boolean) {
     }
 }
 
-
+// Course List
 @Composable
 fun CourseList() {
     val courses = listOf(
@@ -174,21 +152,24 @@ fun CourseList() {
             description = "Unleash your creative potential in digital design and create stunning visuals...",
             progress = 80f,
             backgroundColor = Color(0xFFFFD5D5)
-        ),
-        Course(
-            title = "Graphic Designing",
-            description = "Unleash your creative potential in digital design and create stunning visuals...",
-            progress = 80f,
-            backgroundColor = Color(0xFFFFD5D5)
-    )
+        )
     )
 
-    Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
-    ) {
-        courses.forEach { course ->
-            CourseCard(course = course)
-            Spacer(modifier = Modifier.height(16.dp))
+    if (courses.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("No courses available", fontSize = 16.sp, color = Color.Gray)
+        }
+    } else {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp),
+        ) {
+            courses.forEach { course ->
+                CourseCard(course = course)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
@@ -254,50 +235,12 @@ fun CourseCard(course: Course) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(5.dp))
-                        .height(10.dp)
-                    ,
-
+                        .height(10.dp),
                     color = Color(0xFF7875FF),
                     trackColor = Color(0xFFFFFFFF)
-
                 )
-
             }
         }
-    }
-}
-
-// Bottom Navigation Bar
-@Composable
-fun BottomNavigationBar2() {
-    BottomNavigation(
-        backgroundColor = Color.White
-    ) {
-        BottomNavigationItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.ic_home),tint = Color.Unspecified, contentDescription = "Home") },
-            selected = true,
-            onClick = { /* Handle home click */ }
-        )
-        BottomNavigationItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.ic_movies),tint = Color.Unspecified, contentDescription = "Favorites") },
-            selected = false,
-            onClick = { /* Handle favorites click */ }
-        )
-        BottomNavigationItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.ic_books),tint = Color.Unspecified, contentDescription = "Courses") },
-            selected = false,
-            onClick = { /* Handle courses click */ }
-        )
-        BottomNavigationItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.ic_books),tint = Color.Unspecified, contentDescription = "Notifications") },
-            selected = false,
-            onClick = { /* Handle notifications click */ }
-        )
-        BottomNavigationItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.ic_course_image),tint = Color.Unspecified, contentDescription = "Search") },
-            selected = false,
-            onClick = { /* Handle search click */ }
-        )
     }
 }
 
@@ -308,3 +251,87 @@ fun PreviewMyCoursesScreen() {
     MyCoursesScreen()
 }
 
+
+@Composable
+fun HeaderWithColorSeparation() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF8F8FF)) // Background color for the top section
+    ) {
+        Column {
+            // First Row with Icon and Title
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFECEAFF)) // Separate color background
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { /* Handle back click */ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.vector),
+                        contentDescription = "Back",
+                        modifier = Modifier.size(28.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+                Text(
+                    text = "My Courses",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF7875FF),
+                )
+                IconButton(onClick = { /* Handle search click */ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_course_image),
+                        contentDescription = "Search",
+                        modifier = Modifier.size(28.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+
+            // Second Row with Tabs
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFAEA8F6)) // Another separate color
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                CategoryTab(title = "All", isSelected = true, onClick = {})
+                CategoryTab(title = "Ongoing", isSelected = false, onClick = {})
+                CategoryTab(title = "Completed", isSelected = false, onClick = {})
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryTab2(title: String, isSelected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = if (isSelected) Color(0xFF7875FF) else Color(0xFFECEAFF),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            color = if (isSelected) Color.White else Color(0xFF4A4A8A),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewHeaderWithColorSeparation() {
+    HeaderWithColorSeparation()
+}

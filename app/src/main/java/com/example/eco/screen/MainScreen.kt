@@ -86,7 +86,7 @@ fun MainScreen() {
         ) {
             composable("home") { HomeScreen() }
             composable("music") { MusicScreen() }
-            composable("movies") { MoviesScreen() }
+            composable("movies") { MyCoursesScreen() }
             composable("books") { BooksScreen() }
             composable("profile") { ProfileScreen() }
         }
