@@ -11,6 +11,9 @@
       <entry key="loginReview">
         <State />
       </entry>
+      <entry key="reviewBottomBar">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
