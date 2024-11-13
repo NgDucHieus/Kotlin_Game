@@ -1,4 +1,4 @@
-package com.example.eco
+package com.example.eco.screen
 
 import androidx.compose.ui.text.input.ImeAction
 

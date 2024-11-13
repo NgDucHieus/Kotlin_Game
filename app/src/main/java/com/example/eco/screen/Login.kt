@@ -1,4 +1,4 @@
-package com.example.eco
+package com.example.eco.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -157,17 +157,17 @@ fun LoginUIScreen(navController: NavHostController) {
 
         // Login Button (Initially Disabled)
         Button(
-            onClick = {
+                onClick = {
                     if (password == "1234" && email == "hieu57075@gmail.com") {
                         navController.navigate("main")
                     }
-                      },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            enabled = email.isNotEmpty() && password.isNotEmpty(), // Enable when inputs are filled
-            colors = ButtonDefaults.buttonColors(backgroundColor = if (email.isNotEmpty() && password.isNotEmpty()) Color(0xFF386FFF) else Color.LightGray),
-            shape = RoundedCornerShape(8.dp)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                enabled = email.isNotEmpty() && password.isNotEmpty(), // Enable when inputs are filled
+                colors = ButtonDefaults.buttonColors(backgroundColor = if (email.isNotEmpty() && password.isNotEmpty()) Color(0xFF386FFF) else Color.LightGray),
+                shape = RoundedCornerShape(8.dp)
         ) {
             Text("Log In", color = if (email.isNotEmpty() && password.isNotEmpty()) Color.White else Color.Gray, fontSize = 16.sp)
         }
