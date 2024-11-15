@@ -2,22 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="PreviewHeaderWithColorSeparation">
+      <entry key="MyCoursesActivity">
         <State />
       </entry>
-      <entry key="ReviewLoginScreen">
+      <entry key="P">
         <State />
       </entry>
-      <entry key="VideoScreen">
+      <entry key="Per">
+        <State />
+      </entry>
+      <entry key="Preview">
+        <State />
+      </entry>
+      <entry key="PreviewCodeWithQR">
         <State />
       </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="loginReview">
-        <State />
-      </entry>
-      <entry key="reviewBottomBar">
         <State />
       </entry>
     </value>

@@ -68,4 +68,13 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation ("androidx.camera:camera-core:1.4.0")
+    implementation ("androidx.camera:camera-view:1.4.0")
+    implementation ("com.google.mlkit:barcode-scanning:17.3.0")
+
+    implementation ("androidx.media3:media3-exoplayer:1.0.2")
+    implementation ("androidx.media3:media3-ui:1.0.2")
+
+
 }
