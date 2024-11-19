@@ -50,6 +50,13 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.compose.ui:ui:1.5.0") // Replace with the latest Compose version
+    implementation ("androidx.compose.material:material:1.5.0")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    implementation ("androidx.activity:activity-compose:1.7.2")
+
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+    implementation ("androidx.compose.material:material-icons-extended:1.5.0")
     implementation ("androidx.compose.material:material-icons-extended:1.0.0")
     implementation ("androidx.compose.ui:ui:1.5.1")
     implementation ("androidx.compose.material:material:1.5.1")

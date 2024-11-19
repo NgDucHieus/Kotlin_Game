@@ -5,6 +5,9 @@
       <entry key="MyCoursesActivity">
         <State />
       </entry>
+      <entry key="MyCoursesScreenPreview">
+        <State />
+      </entry>
       <entry key="P">
         <State />
       </entry>
@@ -12,9 +15,6 @@
         <State />
       </entry>
       <entry key="Preview">
-        <State />
-      </entry>
-      <entry key="PreviewCodeWithQR">
         <State />
       </entry>
       <entry key="app">
