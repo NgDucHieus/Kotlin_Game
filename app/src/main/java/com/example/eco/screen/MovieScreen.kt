@@ -136,7 +136,7 @@ fun CategoryTab(title: String, isSelected: Boolean, onClick: () -> Unit) {
 fun CourseList() {
     val courses = listOf(
         Course(
-            title = "UI/UX Designing",
+            title = "Quả cam ",
             description = "Design intuitive digital interfaces for a seamless user experience...",
             progress = 70f,
             backgroundColor = Color(0xFFBFFFE0)
