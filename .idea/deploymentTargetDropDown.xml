@@ -2,19 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="MyCoursesActivity">
-        <State />
-      </entry>
       <entry key="MyCoursesScreenPreview">
         <State />
       </entry>
-      <entry key="Per">
+      <entry key="PreviewEpisodeItem">
         <State />
       </entry>
-      <entry key="Pre">
+      <entry key="PreviewHomeScreen">
         <State />
       </entry>
-      <entry key="Prevasd">
+      <entry key="PreviewMainApp">
+        <State />
+      </entry>
+      <entry key="ReviewLoginScreen">
         <State />
       </entry>
       <entry key="app">

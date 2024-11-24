@@ -93,15 +93,7 @@ fun MainScreen() {
     }
 }
 
-@Composable
-fun HomeScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Home Screen", fontSize = 24.sp)
-    }
-}
+
 
 @Composable
 fun MusicScreen() {
@@ -124,15 +116,7 @@ fun BooksScreen() {
     }
 }
 
-@Composable
-fun ProfileScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Profile Screen", fontSize = 24.sp)
-    }
-}
+
 
 @Preview
 @Composable

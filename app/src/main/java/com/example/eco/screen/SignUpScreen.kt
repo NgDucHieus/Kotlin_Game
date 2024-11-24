@@ -75,5 +75,3 @@ fun SignUpScreen(navController: NavHostController) {
     }
 }
 
-//@Preview
-//@Composable
