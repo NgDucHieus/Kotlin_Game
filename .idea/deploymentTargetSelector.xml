@@ -5,10 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MyCoursesActivity">
+      <SelectionState runConfigName="PreviewLevel4DecorateGardenWithArrowsAndRow">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MyCoursesScreenPreview">
+      <SelectionState runConfigName="PreviewLevel4DecorateGardenWithInstruction">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="PreviewLevel4DecorateGardenWithInstructionAndArrows">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="PreviewLevel2">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="PreviewOrangeGame">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

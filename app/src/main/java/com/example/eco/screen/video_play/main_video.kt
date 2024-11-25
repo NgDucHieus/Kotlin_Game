@@ -51,6 +51,21 @@ import androidx.compose.material.Slider
 
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.filled.FastForward
+import androidx.compose.material.icons.filled.FastRewind
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.delay
 
 @OptIn(UnstableApi::class)
 @Composable
@@ -69,22 +84,22 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
     }
 
     // Cleanup ExoPlayer when composable is disposed
-    DisposableEffect(exoPlayer) {
+    DisposableEffect(Unit) {
         onDispose {
+            exoPlayer.stop()
             exoPlayer.release()
         }
     }
 
-    // State for playback control
-    var isPlaying by remember { mutableStateOf(false) }
+    // State for playback progress and UI visibility
     var currentTime by remember { mutableStateOf(0L) }
     var duration by remember { mutableStateOf(0L) }
     var showUI by remember { mutableStateOf(true) }
 
-    // Blur animation state
+    // Animate blur based on UI visibility
     val blurRadius by animateDpAsState(targetValue = if (showUI) 20.dp else 0.dp)
 
-    // Observing playback progress
+    // Observe playback progress
     LaunchedEffect(exoPlayer) {
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
@@ -100,10 +115,10 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
         }
     }
 
-    // Auto-hide UI logic
+    // Auto-hide UI after a delay
     LaunchedEffect(showUI) {
         if (showUI) {
-            delay(3000) // Hide UI after 3 seconds
+            delay(3000) // Hide UI after 3 seconds of inactivity
             showUI = false
         }
     }
@@ -115,10 +130,11 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
             .aspectRatio(16f / 9f)
             .background(Color.Black)
             .clickable {
-                showUI = true // Show UI on user interaction
+                // Show UI and trigger blur on tap
+                showUI = true
             }
     ) {
-        // PlayerView with blur effect
+        // PlayerView with animated blur effect
         AndroidView(
             factory = { ctx ->
                 PlayerView(ctx).apply {
@@ -128,11 +144,12 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
             },
             modifier = Modifier
                 .fillMaxSize()
-                .blur(blurRadius) // Apply animated blur
+                .blur(blurRadius) // Apply animated blur when UI is visible
         )
 
-        // Center Playback Controls (Play, Pause, Skip)
+        // Playback Controls (Only visible if showUI is true)
         if (showUI) {
+            // Center Controls
             Row(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -157,17 +174,16 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
                 // Play/Pause Button
                 IconButton(
                     onClick = {
-                        if (isPlaying) {
+                        if (exoPlayer.isPlaying) {
                             exoPlayer.pause()
                         } else {
                             exoPlayer.play()
                         }
-                        isPlaying = !isPlaying
                     }
                 ) {
                     Icon(
-                        imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                        contentDescription = if (isPlaying) "Pause" else "Play",
+                        imageVector = if (exoPlayer.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        contentDescription = if (exoPlayer.isPlaying) "Pause" else "Play",
                         tint = Color.White,
                         modifier = Modifier.size(64.dp)
                     )
@@ -187,10 +203,8 @@ fun JetpackComposeVideoPlayerWithAnimatedBlur(
                     )
                 }
             }
-        }
 
-        // Bottom Controls: Time Display and Progress Bar
-        if (showUI) {
+            // Bottom Controls: Time Display and Progress Bar
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -270,7 +284,6 @@ fun MyCoursesScreen() {
         }
     )
 }
-
 
 @Preview(showBackground = true)
 @Composable
